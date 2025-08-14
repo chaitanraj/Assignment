@@ -1,0 +1,18 @@
+.question{
+    border: 2px solid black;
+    color: rgb(240, 24, 24);
+    height: auto;
+    width: auto;
+}
+
+.mcq{
+    border: 2px solid black;
+    height: 30vh;
+    width: 40vh;
+}
+
+
+.question:empty::before{
+    content: attr(placeholder);
+    color: #888;
+}

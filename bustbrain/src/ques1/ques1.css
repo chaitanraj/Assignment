@@ -1,0 +1,35 @@
+/* .category{
+    border: 1px solid black;
+    height: auto;
+    width: 100vh;
+    display: flex;
+    flex-direction: column;
+    gap: 5vh;
+}
+
+
+.itemBelong{
+    margin-top: 6vh;
+    margin-left: 5vh;
+    border: 1px solid black;
+    height: auto;
+    width: 120vh;
+    display: flex;
+    gap: 65vh;
+}
+
+.item{
+    border: 1px solid black;
+    height: auto;
+    width: 20vh;
+}
+
+.belong{
+    border: 1px solid black;
+    height: auto;
+    width: 20vh;
+    display: flex;
+    flex-direction: column;
+    gap: 2vh;
+}
+ */

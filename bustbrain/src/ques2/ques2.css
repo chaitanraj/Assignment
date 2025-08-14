@@ -1,0 +1,25 @@
+.container h1{
+    color: white;
+    background-color: black;
+}
+
+#text,.selectedwords{
+    border: 1px solid black;
+    height: 6vh;
+    width: 80vh;
+    
+
+}
+.selectedwords{
+    margin-top: 5vh;
+    border: 1px solid black;
+    height: auto;
+    width: 10vh;
+    cursor: move;
+
+}
+#text:empty::before {
+  content: attr(placeholder);
+  color: #888;
+}
+

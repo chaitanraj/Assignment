@@ -22,5 +22,7 @@ app.get("/",()=>{
 })
 
 const ClozeRouter=require("./routes/cloze")
+const CategoriseRouter=require("./routes/categorise")
 app.use("/cloze",ClozeRouter);
+app.use("/categorise",CategoriseRouter);
 

@@ -1,11 +1,12 @@
 import React, { useState, useRef } from 'react';
 // import { GripVertical } from 'lucide-react';
 
-// Question 1 Component
 const ques1 = () => {
   const [inputs, setInputs] = useState(['', '']);
   const [items, setItems] = useState(['', '']);
   const [draggedIndex, setDraggedIndex] = useState(null);
+  const [selectedCategories, setSelectedCategories] = useState({});
+
 
   const addInput = () => {
     setInputs([...inputs, '']);
@@ -53,7 +54,7 @@ const ques1 = () => {
 
   const handleDrop = (e, dropIndex) => {
     e.preventDefault();
-    
+
     if (draggedIndex === null || draggedIndex === dropIndex) {
       setDraggedIndex(null);
       return;
@@ -61,10 +62,10 @@ const ques1 = () => {
 
     const newInputs = [...inputs];
     const draggedItem = newInputs[draggedIndex];
-    
+
     newInputs.splice(draggedIndex, 1);
     newInputs.splice(dropIndex, 0, draggedItem);
-    
+
     setInputs(newInputs);
     setDraggedIndex(null);
   };
@@ -72,40 +73,51 @@ const ques1 = () => {
   const handleDragEnd = () => {
     setDraggedIndex(null);
   };
-   const handleSubmit = async () => {
-        alert("Ques1 Submitted")
 
-        // const data = {
-        //     sentence: contentEditableRef.current?.innerHTML || '',
-        //     selectedWords: selected
-        // };
+  // Add this handler
+  const handleCategorySelect = (itemIndex, categoryValue) => {
+    setSelectedCategories(prev => ({
+      ...prev,
+      [itemIndex]: categoryValue
+    }));
+  };
 
-        // try {
-        //     const response = await fetch('http://localhost:5000/cloze', {
-        //         method: 'POST',
-        //         headers: {
-        //             'Content-Type': 'application/json',
-        //         },
-        //         body: JSON.stringify(data)
-        //     });
 
-        //     if (response.ok) {
-        //         console.log('Data sent successfully');
-        //     }
-        // } catch (error) {
-        //     console.error('Error:', error);
-        // }
-    };
+  // Minimal handleSubmit
+  const handleSubmit = async () => {
+  alert("Ques1 Submitted")
+    try {
+      const response = await fetch('http://localhost:5000/catgeorise', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          categories: inputs.filter(input => input.trim()).map((input, i) => ({
+            id: `cat${i}`,
+            name: input
+          })),
+          items: items.map((item, i) => ({
+            id: `item${i}`,
+            name: item,
+            categoryId: selectedCategories[i] ? `cat${inputs.findIndex(input => input === selectedCategories[i])}` : null
+          })).filter(item => item.name.trim() && item.categoryId)
+        })
+      });
 
+      response.ok ? alert('Saved!') : alert('Error!');
+    } catch (error) {
+      alert('Failed!');
+    }
+  };
+  
   return (
     <div className="p-6 max-w-4xl mx-auto mb-12 border-b border-gray-200">
       <h1 className="text-2xl font-bold mb-6 text-gray-800">Question 1</h1>
-      
+
       <div className="mb-6">
         <h2 className="text-lg font-medium mb-3 text-gray-700">Categories</h2>
         {inputs.map((input, index) => (
-          <div 
-            key={index} 
+          <div
+            key={index}
             className="mb-2 flex items-center"
             draggable
             onDragStart={(e) => handleDragStart(e, index)}
@@ -152,7 +164,7 @@ const ques1 = () => {
 
         <div className="space-y-3">
           {items.map((item, index) => (
-            <div key={index} className="flex items-center">  
+            <div key={index} className="flex items-center">
               <button
                 type="button"
                 onClick={() => removeItem(index)}
@@ -170,7 +182,11 @@ const ques1 = () => {
                 />
               </div>
               <div className="w-80">
-                <select className="border border-gray-300 px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <select
+                  value={selectedCategories[index] || ''}
+                  onChange={(e) => handleCategorySelect(index, e.target.value)}
+                  className="border border-gray-300 px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
                   <option value="">Select Category</option>
                   {inputs.map((value, categoryIndex) => (
                     <option key={categoryIndex} value={value}>
@@ -190,12 +206,12 @@ const ques1 = () => {
           </button>
         </div>
       </div>
-      
-      <button 
-        onClick={handleSubmit} 
+
+      <button
+        onClick={handleSubmit}
         className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
       >
-        Submit
+        Save
       </button>
     </div>
   );

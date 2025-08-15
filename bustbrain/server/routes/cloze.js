@@ -4,7 +4,7 @@ const cloze = require("../models/cloze");
 
 router.post("/", async (req, res) => {
     console.log("Cloze Route Hit");
-    console.log("Request body:", req.body); // Debug log
+    console.log("Request body:", req.body);
     
     if (!req.body) {
         return res.status(400).json({ error: "Body missing for cloze" });
@@ -24,5 +24,14 @@ router.post("/", async (req, res) => {
         return res.status(500).json({ error: "Error in cloze route" });
     }
 });
+
+router.get("/",async(req,res)=>{
+    console.log("Cloze get route hit");
+    const doc=await cloze.findOne();
+    const sentenceDoc=doc?.sentence;
+    const words=doc?.words
+
+    return res.json({sentence:sentenceDoc,words:words})
+})
 
 module.exports = router;

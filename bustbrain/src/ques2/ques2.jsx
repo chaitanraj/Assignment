@@ -120,7 +120,7 @@ const ques2 = () => {
         onClick={handleSubmit} 
         className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
       >
-        Submit
+        Save
       </button>
     </div>
   );

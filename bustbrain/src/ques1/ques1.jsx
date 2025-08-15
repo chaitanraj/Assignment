@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
+// import { GripVertical } from 'lucide-react';
 
-const Ques1 = () => {
+// Question 1 Component
+const ques1 = () => {
   const [inputs, setInputs] = useState(['', '']);
   const [items, setItems] = useState(['', '']);
   const [draggedIndex, setDraggedIndex] = useState(null);
@@ -19,6 +21,7 @@ const Ques1 = () => {
       setInputs(newInputs);
     }
   };
+
   const removeItem = (indexToRemove) => {
     if (items.length > 1) {
       const newItems = items.filter((_, index) => index !== indexToRemove);
@@ -59,10 +62,7 @@ const Ques1 = () => {
     const newInputs = [...inputs];
     const draggedItem = newInputs[draggedIndex];
     
-    // Remove the dragged item
     newInputs.splice(draggedIndex, 1);
-    
-    // Insert it at the new position
     newInputs.splice(dropIndex, 0, draggedItem);
     
     setInputs(newInputs);
@@ -72,12 +72,37 @@ const Ques1 = () => {
   const handleDragEnd = () => {
     setDraggedIndex(null);
   };
+   const handleSubmit = async () => {
+        alert("Ques1 Submitted")
+
+        // const data = {
+        //     sentence: contentEditableRef.current?.innerHTML || '',
+        //     selectedWords: selected
+        // };
+
+        // try {
+        //     const response = await fetch('http://localhost:5000/cloze', {
+        //         method: 'POST',
+        //         headers: {
+        //             'Content-Type': 'application/json',
+        //         },
+        //         body: JSON.stringify(data)
+        //     });
+
+        //     if (response.ok) {
+        //         console.log('Data sent successfully');
+        //     }
+        // } catch (error) {
+        //     console.error('Error:', error);
+        // }
+    };
 
   return (
-    <div className="p-6 max-w-2xl">
-      {/* Categories Section */}
+    <div className="p-6 max-w-4xl mx-auto mb-12 border-b border-gray-200">
+      <h1 className="text-2xl font-bold mb-6 text-gray-800">Question 1</h1>
+      
       <div className="mb-6">
-        <h2 className="text-lg font-medium mb-3">Categories</h2>
+        <h2 className="text-lg font-medium mb-3 text-gray-700">Categories</h2>
         {inputs.map((input, index) => (
           <div 
             key={index} 
@@ -100,72 +125,58 @@ const Ques1 = () => {
               type="text"
               value={input}
               onChange={(e) => handleInputChange(index, e.target.value)}
-              placeholder={
-                index < 2
-                  ? `Category${index + 1}`
-                  : `Category ${index + 1}`
-              }
-              className={`border border-gray-300 px-3 py-2 w-80 cursor-move`}
-              onMouseDown={(e) => e.stopPropagation()} // Prevent drag when clicking input
+              placeholder={`Category ${index + 1}`}
+              className="border border-gray-300 px-3 py-2 w-80 cursor-move focus:outline-none focus:ring-2 focus:ring-blue-500"
+              onMouseDown={(e) => e.stopPropagation()}
             />
           </div>
         ))}
         <button
           type="button"
           onClick={addInput}
-          className="text-blue-600 mt-2 text-sm"
+          className="text-blue-600 mt-2 text-sm hover:text-blue-800"
         >
           + Add Category
         </button>
       </div>
 
-      {/* Items Section */}
       <div>
         <div className="flex mb-2 gap-5">
-          <div className="w-80 ">
-            <h4 className="text-sm font-medium">Items</h4>
+          <div className="w-80">
+            <h4 className="text-sm font-medium text-gray-700">Items</h4>
           </div>
           <div className="w-80">
-            <h4 className="text-sm font-medium">Belongs To</h4>
+            <h4 className="text-sm font-medium text-gray-700">Belongs To</h4>
           </div>
         </div>
 
-        <div className="space-y-10">
-          
+        <div className="space-y-3">
           {items.map((item, index) => (
-            <div key={index} className="flex">  
-            <button
-              type="button"
-              onClick={() => removeItem(index)}
-              className="mr-2 text-red-500 hover:text-red-700 font-bold text-lg"
-              onMouseDown={(e) => e.stopPropagation()}
-            >
-              ×
-            </button>
-
-              <div className="w-80 mr-16">
+            <div key={index} className="flex items-center">  
+              <button
+                type="button"
+                onClick={() => removeItem(index)}
+                className="mr-2 text-red-500 hover:text-red-700 font-bold text-lg"
+              >
+                ×
+              </button>
+              <div className="w-80 mr-5">
                 <input
                   type="text"
                   value={item}
                   onChange={(e) => handleItemChange(index, e.target.value)}
-                  placeholder={
-                    index < 2
-                      ? `Item ${index + 1}`
-                      : `Item ${index + 1}`
-                  }
-                  className="border border-gray-300 px-3 py-2 w-full"
+                  placeholder={`Item ${index + 1}`}
+                  className="border border-gray-300 px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
               <div className="w-80">
-                <select className="border border-gray-300 px-3 py-2 w-full">
+                <select className="border border-gray-300 px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500">
                   <option value="">Select Category</option>
-                  {inputs.map((value, categoryIndex) => {
-                    return (
-                      <option key={categoryIndex} value={value}>
-                        {value || `Category ${categoryIndex + 1}`}
-                      </option>
-                    );
-                  })}
+                  {inputs.map((value, categoryIndex) => (
+                    <option key={categoryIndex} value={value}>
+                      {value || `Category ${categoryIndex + 1}`}
+                    </option>
+                  ))}
                 </select>
               </div>
             </div>
@@ -173,14 +184,21 @@ const Ques1 = () => {
           <button
             type="button"
             onClick={addItems}
-            className="text-blue-600 mt-3 text-sm"
+            className="text-blue-600 mt-3 text-sm hover:text-blue-800"
           >
             + Add Items
           </button>
         </div>
       </div>
+      
+      <button 
+        onClick={handleSubmit} 
+        className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
+      >
+        Submit
+      </button>
     </div>
   );
 };
 
-export default Ques1;
+export default ques1;

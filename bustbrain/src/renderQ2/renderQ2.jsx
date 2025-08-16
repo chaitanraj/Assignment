@@ -8,7 +8,7 @@ const RenderQ2 = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const res = await fetch(`http://localhost:5000/cloze`, {
+      const res = await fetch(`https://formbuilder-ztjx.onrender.com//cloze`, {
         method: "GET",
       })
       const data = await res.json();
@@ -79,7 +79,7 @@ const RenderQ2 = () => {
     }
 
     try {
-      await fetch('http://localhost:5000/responseQ2', {
+      await fetch('https://formbuilder-ztjx.onrender.com/responseQ2', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ sentence: finalSentence }),

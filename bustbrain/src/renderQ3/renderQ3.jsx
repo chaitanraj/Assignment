@@ -7,7 +7,7 @@ const RenderQ3 = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch('http://localhost:5000/comprehension')
+    fetch('https://formbuilder-ztjx.onrender.com/comprehension')
       .then(res => res.json())
       .then(data => setData(data))
       .catch(err => console.error(err));
@@ -15,7 +15,7 @@ const RenderQ3 = () => {
 
   const handleSubmit = async () => {
     try {
-      await fetch('http://localhost:5000/responseQ3', {
+      await fetch('https://formbuilder-ztjx.onrender.com//responseQ3', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ selectedAnswers }),

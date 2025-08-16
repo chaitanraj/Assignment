@@ -48,7 +48,7 @@ const ques2 = () => {
         };
 
         try {
-            const response = await fetch('http://localhost:5000/cloze', {
+            const response = await fetch('https://formbuilder-ztjx.onrender.com/cloze', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -72,7 +72,7 @@ const ques2 = () => {
 
       const formData = new FormData();
       formData.append('file', file);
-      const response = await fetch('http://localhost:5000/upload', {
+      const response = await fetch('https://formbuilder-ztjx.onrender.com/upload', {
         method: 'POST',
         body: formData
       });

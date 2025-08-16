@@ -88,7 +88,7 @@ const ques1 = () => {
   const handleSubmit = async () => {
     alert("Ques1 Submitted")
     try {
-      const response = await fetch('http://localhost:5000/categorise', {
+      const response = await fetch('https://formbuilder-ztjx.onrender.com/categorise', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -120,7 +120,7 @@ const ques1 = () => {
 
       const formData = new FormData();
       formData.append('file', file);
-      const response = await fetch('http://localhost:5000/upload', {
+      const response = await fetch('https://formbuilder-ztjx.onrender.com/upload', {
         method: 'POST',
         body: formData
       });

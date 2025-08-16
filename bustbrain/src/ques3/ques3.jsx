@@ -56,7 +56,7 @@ const ques3 = () => {
 
       console.log('Sending data:', data);
 
-      const res = await fetch('http://localhost:5000/comprehension', {
+      const res = await fetch('https://formbuilder-ztjx.onrender.com/comprehension', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
@@ -77,7 +77,7 @@ const ques3 = () => {
 
       const formData = new FormData();
       formData.append('file', file);
-      const response = await fetch('http://localhost:5000/upload', {
+      const response = await fetch('https://formbuilder-ztjx.onrender.com/upload', {
         method: 'POST',
         body: formData
       });

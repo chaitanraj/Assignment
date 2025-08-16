@@ -9,7 +9,7 @@ const RenderQ1 = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch(`http://localhost:5000/categorise`, {
+        const res = await fetch(`https://formbuilder-ztjx.onrender.com/categorise`, {
           method: "GET",
         })
         const data = await res.json();
@@ -61,7 +61,7 @@ const RenderQ1 = () => {
 
   const handleSubmit = async () => {
     try {
-      await fetch('http://localhost:5000/responseQ1', {
+      await fetch('https://formbuilder-ztjx.onrender.com/responseQ1', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ droppedItems }),

@@ -8,7 +8,7 @@ const RenderQ2 = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const res = await fetch(`https://formbuilder-ztjx.onrender.com//cloze`, {
+      const res = await fetch(`https://formbuilder-ztjx.onrender.com/cloze`, {
         method: "GET",
       })
       const data = await res.json();

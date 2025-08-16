@@ -8,8 +8,11 @@ const multer = require('multer');
 const responseQ1 = require("./models/responseQ1");
 const ResponseQ2=require("./models/responseQ2")
 const ResponseQ3=require("./models/responseQ3")
+require("dotenv").config();
+
 
 app.use(cors());
+
 app.use(express.json());
 const upload = multer({ dest: 'uploads/' });
 
@@ -19,7 +22,7 @@ app.post('/upload', upload.single('file'), (req, res) => {
 
 
 mongoose
-  .connect('mongodb://localhost:27017/bustbrain')
+  .connect(process.env.MONGO_URI)
   .then(() => console.log("✅ Connected to MongoDB"))
   .catch((err) => console.error("❌ MongoDB connection error:", err));
 

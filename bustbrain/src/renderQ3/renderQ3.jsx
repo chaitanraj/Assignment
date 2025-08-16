@@ -15,7 +15,7 @@ const RenderQ3 = () => {
 
   const handleSubmit = async () => {
     try {
-      await fetch('https://formbuilder-ztjx.onrender.com//responseQ3', {
+      await fetch('https://formbuilder-ztjx.onrender.com/responseQ3', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ selectedAnswers }),

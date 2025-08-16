@@ -58,9 +58,7 @@ const RenderQ2 = () => {
             key={`dropzone-${i}`}
             onDrop={(e) => handleDrop(e, i)}
             onDragOver={handleDragOver}
-            className={`inline-block min-w-[80px] h-[30px] mx-[5px] px-[10px] py-[5px] border-2 border-dashed border-gray-300 rounded text-center leading-5 ${droppedWords[i] ? 'bg-green-50' : 'bg-gray-50'
-              }`}
-          >
+            className={`inline-block min-w-[80px] h-[30px] mx-[5px] px-[10px] py-[5px] border-2 border-dashed border-gray-300 rounded text-center leading-5 ${droppedWords[i] ? 'bg-green-50' : 'bg-gray-50'}`}>
             {droppedWords[i] || ''}
           </span>
         );

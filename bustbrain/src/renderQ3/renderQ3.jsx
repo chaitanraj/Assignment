@@ -20,7 +20,7 @@ const RenderQ3 = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ selectedAnswers }),
       });
-      alert('Submitted!');
+      console.log('Submitted!');
     } catch (error) {
       alert('Error!');
     } finally {

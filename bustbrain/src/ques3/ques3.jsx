@@ -1,10 +1,19 @@
 import React, { useState } from 'react'
 
 const ques3 = () => {
-  const [mcq, setMcq] = useState(['']);
+  const [passage, setPassage] = useState('');
+  const [mcq, setMcq] = useState([{
+    questionText: '',
+    options: ['', '', '', ''],
+    correctAnswer: 0
+  }]);
 
   const addDiv = () => {
-    setMcq([...mcq, '']);
+    setMcq([...mcq, {
+      questionText: '',
+      options: ['', '', '', ''],
+      correctAnswer: 0
+    }]);
   };
 
   const removeDiv = (indexToRemove) => {
@@ -13,29 +22,49 @@ const ques3 = () => {
       setMcq(newMcq);
     }
   };
+
+  const updateQuestion = (index, questionText) => {
+    const newMcq = [...mcq];
+    newMcq[index].questionText = questionText;
+    setMcq(newMcq);
+  };
+
+  const updateOption = (questionIndex, optionIndex, value) => {
+    const newMcq = [...mcq];
+    newMcq[questionIndex].options[optionIndex] = value;
+    setMcq(newMcq);
+  };
+
+  const updateCorrectAnswer = (questionIndex, optionIndex) => {
+    const newMcq = [...mcq];
+    newMcq[questionIndex].correctAnswer = optionIndex;
+    setMcq(newMcq);
+  };
+
   const handleSubmit = async () => {
-    alert("Ques3 Submitted")
-
-    // const data = {
-    //   sentence: contentEditableRef.current?.innerHTML || '',
-    //   selectedWords: selected
-    // };
-
-    // try {
-    //   const response = await fetch('http://localhost:5000/cloze', {
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //     },
-    //     body: JSON.stringify(data)
-    //   });
-
-    //   if (response.ok) {
-    //     console.log('Data sent successfully');
-    //   }
-    // } catch (error) {
-    //   console.error('Error:', error);
-    // }
+    try {
+      const data = {
+        passage,
+        questions: mcq.map(q => ({
+          questionText: q.questionText,
+          options: q.options,
+          correctAnswer: q.correctAnswer
+        }))
+      };
+      
+      console.log('Sending data:', data);
+      
+      const res = await fetch('http://localhost:5000/comprehension', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      
+      alert(res.ok ? "Saved!" : "Failed!");
+    } catch (error) {
+      console.error('Error:', error);
+      alert("Error!");
+    }
   };
 
   return (
@@ -44,10 +73,11 @@ const ques3 = () => {
 
       <div className="mb-6">
         <label className="block text-lg font-medium text-gray-700 mb-3">Question Text</label>
-        <div
-          className="w-full min-h-[120px] p-4 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 empty:before:content-['Type_your_question_here'] empty:before:text-gray-400"
-          contentEditable
-          suppressContentEditableWarning={true}
+        <textarea
+          className="w-full min-h-[120px] p-4 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+          placeholder="Type your question here"
+          value={passage}
+          onChange={(e) => setPassage(e.target.value)}
         />
       </div>
 
@@ -61,7 +91,7 @@ const ques3 = () => {
         </button>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {mcq.map((value, index) => (
+          {mcq.map((question, index) => (
             <div
               key={index}
               className="border border-gray-300 rounded p-4 relative"
@@ -72,38 +102,36 @@ const ques3 = () => {
               >
                 ×
               </button>
-               <div className="mt-3">
+              <div className="mt-3">
                 <label className="block text-sm font-medium text-gray-600 mb-1">Type your question:</label>
-                <div
-                  className="w-full min-h-[80px] p-3 border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 empty:before:content-['Enter_your_question_text_here...'] empty:before:text-gray-400"
-                  contentEditable
-                  suppressContentEditableWarning={true}
+                <textarea
+                  className="w-full min-h-[80px] p-3 border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Enter your question text here..."
+                  value={question.questionText}
+                  onChange={(e) => updateQuestion(index, e.target.value)}
                 />
               </div>
               <h3 className="font-medium text-gray-700 mb-3">Option {index + 1}</h3>
               <div className="space-y-2">
-                <input
-                  type="text"
-                  placeholder="Option A"
-                  className="w-full p-2 border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-                <input
-                  type="text"
-                  placeholder="Option B"
-                  className="w-full p-2 border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-                <input
-                  type="text"
-                  placeholder="Option C"
-                  className="w-full p-2 border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-                <input
-                  type="text"
-                  placeholder="Option D"
-                  className="w-full p-2 border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
+                {question.options.map((option, optionIndex) => (
+                  <div key={optionIndex} className="flex items-center gap-2">
+                    <input
+                      type="radio"
+                      name={`correct-${index}`}
+                      checked={question.correctAnswer === optionIndex}
+                      onChange={() => updateCorrectAnswer(index, optionIndex)}
+                      className="w-3 h-3"
+                    />
+                    <input
+                      type="text"
+                      placeholder={`Option ${String.fromCharCode(65 + optionIndex)}`}
+                      className="flex-1 p-2 border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      value={option}
+                      onChange={(e) => updateOption(index, optionIndex, e.target.value)}
+                    />
+                  </div>
+                ))}
               </div>
-             
             </div>
           ))}
         </div>

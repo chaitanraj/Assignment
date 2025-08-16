@@ -35,12 +35,10 @@ const RenderQ1 = () => {
     return colors[index % colors.length];
   }
 
-  // Handle drag start
   const handleDragStart = (e, itemName) => {
     e.dataTransfer.setData('text/plain', itemName);
   };
 
-  // Handle drop
   const handleDrop = (e, categoryIndex) => {
     e.preventDefault();
     const draggedItem = e.dataTransfer.getData('text/plain');
@@ -82,6 +80,7 @@ const RenderQ1 = () => {
         })}
       </div>
       
+      {/* Categories - Drop zones */}
       <div className="flex gap-12 justify-center flex-wrap">
         {category.map((categoryObj, categoryIndex) => {
           const categoryName = typeof categoryObj === 'string' ? categoryObj : categoryObj?.name;
@@ -94,6 +93,7 @@ const RenderQ1 = () => {
             >
               <div className="mb-2">{categoryName}</div>
               
+              {/* Show dropped items inside category */}
               <div className="flex flex-wrap gap-2 justify-center">
                 {droppedItems[categoryIndex] && droppedItems[categoryIndex].map((droppedItem, idx) => (
                   <span

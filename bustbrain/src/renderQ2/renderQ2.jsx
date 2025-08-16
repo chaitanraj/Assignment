@@ -1,23 +1,22 @@
 import React from 'react'
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
-const RenderQ1 = () => {
-  const [category, setcategory] = useState([]);
-  const [item, setitem] = useState([]);
-  const [droppedItems, setDroppedItems] = useState({});
-
+const RenderQ2 = () => {
+  const [sentence, setSentence] = useState("");
+  const [words, setWords] = useState(['']);
+  const [droppedWords, setDroppedWords] = useState({}); // Track which words are dropped where
+  
   useEffect(() => {
     const fetchData = async () => {
-      const res = await fetch(`http://localhost:5000/categorise`, {
+      const res = await fetch(`http://localhost:5000/cloze`, {
         method: "GET",
       })
       const data = await res.json();
+      const finalSentence = data.sentence.replace(/<u>.*?<\/u>/g, '_____');
       if (res.ok) {
         console.log("Sentence fetched");
-        setcategory(data.categories);
-        // Extract all items from all categories
-        const allItems = data.categories.flatMap(cat => cat.items);
-        setitem(allItems);
+        setSentence(finalSentence);
+        setWords(data.words);
       }
       else {
         console.log("Frontend Error for GET route");
@@ -26,24 +25,18 @@ const RenderQ1 = () => {
     fetchData();
   }, [])
 
-  // Helper function to get color for category
-  const getCategoryColor = (index) => {
-    const colors = ['bg-pink-200', 'bg-yellow-200', 'bg-blue-200', 'bg-green-200', 'bg-purple-200'];
-    return colors[index % colors.length];
-  }
-
   // Handle drag start
-  const handleDragStart = (e, itemName) => {
-    e.dataTransfer.setData('text/plain', itemName);
+  const handleDragStart = (e, word) => {
+    e.dataTransfer.setData('text/plain', word);
   };
 
   // Handle drop
-  const handleDrop = (e, categoryIndex) => {
+  const handleDrop = (e, blankIndex) => {
     e.preventDefault();
-    const draggedItem = e.dataTransfer.getData('text/plain');
-    setDroppedItems(prev => ({
+    const draggedWord = e.dataTransfer.getData('text/plain');
+    setDroppedWords(prev => ({
       ...prev,
-      [categoryIndex]: [...(prev[categoryIndex] || []), draggedItem]
+      [blankIndex]: draggedWord
     }));
   };
 
@@ -52,59 +45,84 @@ const RenderQ1 = () => {
     e.preventDefault();
   };
 
-  // Check if item is already dropped
-  const isItemDropped = (itemName) => {
-    return Object.values(droppedItems).some(items => items && items.includes(itemName));
+  // Render sentence with drop zones
+  const renderSentenceWithDropZones = () => {
+    const parts = sentence.split('_____');
+    const result = [];
+    
+    for (let i = 0; i < parts.length; i++) {
+      result.push(<span key={`text-${i}`}>{parts[i]}</span>);
+      if (i < parts.length - 1) {
+        result.push(
+          <span
+            key={`dropzone-${i}`}
+            onDrop={(e) => handleDrop(e, i)}
+            onDragOver={handleDragOver}
+            style={{
+              display: 'inline-block',
+              minWidth: '80px',
+              height: '30px',
+              margin: '0 5px',
+              padding: '5px 10px',
+              border: '2px dashed #ccc',
+              borderRadius: '4px',
+              backgroundColor: droppedWords[i] ? '#e8f5e8' : '#f9f9f9',
+              textAlign: 'center',
+              lineHeight: '20px',
+              cursor: 'pointer'
+            }}
+          >
+            {droppedWords[i] || ''}
+          </span>
+        );
+      }
+    }
+    
+    return result;
   };
 
   return (
-    <div className="p-12 bg-gray-50 min-h-screen">
-      <h2 className="text-2xl font-semibold mb-12 text-center">Categorise Render</h2>
+    <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
+      <h2 style={{ marginBottom: '20px', color: '#333' }}>Question 2</h2>
       
-      {/* Draggable Items floating independently at the top */}
-      <div className="flex justify-center gap-6 mb-16 flex-wrap">
-        {item.map((itemObj, itemIndex) => {
-          const itemName = itemObj.name;
-          return !isItemDropped(itemName) ? (
-            <div
-              key={itemIndex}
-              draggable
-              onDragStart={(e) => handleDragStart(e, itemName)}
-              className={`${getCategoryColor(itemIndex)} px-6 py-3 rounded-full shadow-md text-lg font-medium text-gray-700 whitespace-nowrap hover:shadow-xl transition-all duration-300 cursor-grab active:cursor-grabbing hover:scale-110 transform hover:-translate-y-1 select-none user-select-none hover:brightness-110 active:scale-95`}
-            >
-              {itemName}
-            </div>
-          ) : null;
-        })}
+      {/* Draggable word bubbles */}
+      <div style={{ marginBottom: '20px' }}>
+        {words
+          .filter(word => !Object.values(droppedWords).includes(word))
+          .map((word, index) => (
+          <span
+            key={index}
+            draggable
+            onDragStart={(e) => handleDragStart(e, word)}
+            style={{
+              display: 'inline-block',
+              backgroundColor: '#9f7aea',
+              color: 'white',
+              padding: '8px 16px',
+              margin: '5px',
+              borderRadius: '20px',
+              fontSize: '14px',
+              fontWeight: '500',
+              cursor: 'grab',
+              userSelect: 'none'
+            }}
+          >
+            {word}
+          </span>
+        ))}
       </div>
       
-      {/* Categories at the bottom - Drop zones */}
-      <div className="flex gap-12 justify-center flex-wrap">
-        {category.map((categoryObj, categoryIndex) => (
-          <div
-            key={categoryIndex}
-            onDrop={(e) => handleDrop(e, categoryIndex)}
-            onDragOver={handleDragOver}
-            className={`${getCategoryColor(categoryIndex)} w-48 min-h-32 rounded-xl flex flex-col items-center justify-center text-lg font-semibold text-gray-700 shadow-md hover:shadow-xl transition-all duration-300 border-3 border-dashed border-transparent hover:border-gray-400 hover:border-blue-400 p-4 hover:scale-105 transform hover:bg-opacity-90 active:scale-95`}
-          >
-            <div className="mb-2">{categoryObj.name}</div>
-            
-            {/* Show dropped items inside category */}
-            <div className="flex flex-wrap gap-2 justify-center">
-              {droppedItems[categoryIndex] && droppedItems[categoryIndex].map((droppedItem, idx) => (
-                <div
-                  key={idx}
-                  className="bg-white bg-opacity-80 px-3 py-1 rounded-full text-sm font-medium shadow-sm hover:shadow-md transition-all duration-200 transform hover:scale-105 cursor-default border border-gray-200"
-                >
-                  {droppedItem}
-                </div>
-              ))}
-            </div>
-          </div>
-        ))}
+      {/* Sentence with drop zones */}
+      <div style={{ 
+        fontSize: '16px', 
+        lineHeight: '1.5',
+        color: '#333',
+        marginTop: '20px'
+      }}>
+        {renderSentenceWithDropZones()}
       </div>
     </div>
   )
 }
 
-export default RenderQ1;
+export default RenderQ2

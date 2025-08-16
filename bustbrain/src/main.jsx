@@ -10,11 +10,17 @@ import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import "./index.css"
 import app from "./App"
 import RenderQ1 from "./renderQ1/renderQ1";
+import RenderQ3 from "./renderQ3/renderQ3"
+import Render from "./render/render";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Builder />,
+  },
+  {
+    path: "/render",
+    element: <Render />,
   },
   {
     path: "/ques3",
@@ -31,6 +37,10 @@ const router = createBrowserRouter([
   {
     path: "/renderQ2",
     element: <RenderQ2 />
+  },
+  {
+    path: "/renderQ3",
+    element: <RenderQ3 />
   },
 ]);
 

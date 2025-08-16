@@ -6,6 +6,8 @@ const mongoose=require("mongoose")
 const cors=require("cors")
 
 app.use(cors());
+app.use(express.json());
+
 
 mongoose
   .connect('mongodb://localhost:27017/bustbrain')
@@ -15,7 +17,6 @@ mongoose
 app.listen(5000,()=>{
     console.log(`Server running on ${PORT}`)
 })
-app.use(express.json());
 
 app.get("/",()=>{
     console.log("Backend Route Reached.")
@@ -23,6 +24,9 @@ app.get("/",()=>{
 
 const ClozeRouter=require("./routes/cloze")
 const CategoriseRouter=require("./routes/categorise")
+const ComprehensionRouter=require("./routes/comprehension")
+
 app.use("/cloze",ClozeRouter);
 app.use("/categorise",CategoriseRouter);
+app.use("/comprehension",ComprehensionRouter);
 

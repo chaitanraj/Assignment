@@ -17,7 +17,7 @@ const builder = () => {
           onClick={()=>navigate("/render")}
           className="px-8 py-4 text-lg bg-blue-600 hover:bg-blue-700 text-white font-medium rounded transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
-          Submit Form.
+          Preview Form.
         </button>
       </div>
     </div>

@@ -5,6 +5,9 @@ const router=express.Router();
 const mongoose=require("mongoose")
 const cors=require("cors")
 const multer = require('multer');
+const responseQ1 = require("./models/responseQ1");
+const ResponseQ2=require("./models/responseQ2")
+const ResponseQ3=require("./models/responseQ3")
 
 app.use(cors());
 app.use(express.json());
@@ -32,6 +35,46 @@ const ClozeRouter=require("./routes/cloze")
 const CategoriseRouter=require("./routes/categorise")
 const ComprehensionRouter=require("./routes/comprehension")
 
+
+// Saving responses 
+// Q1
+app.post('/responseQ1', async (req, res) => {
+  try {
+    const { droppedItems } = req.body;
+    const answer = new responseQ1({ droppedItems });
+    await answer.save();
+    res.json({ success: true, data: answer });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false });
+  }
+});
+// Q2 
+app.post('/responseQ2', async (req, res) => {
+  try {
+    const { sentence } = req.body;
+    console.log('Received sentence:', sentence);
+    const answer = new ResponseQ2({ sentence });
+    await answer.save();
+    res.json({ success: true });
+  } catch (error) {
+    console.error('Error:', error.message);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+// Q3 
+app.post('/responseQ3', async (req, res) => {
+  try {
+    const { selectedAnswers } = req.body;
+    console.log('Received answers:', selectedAnswers);
+    const answer = new ResponseQ3({ selectedAnswers });
+    await answer.save();
+    res.json({ success: true });
+  } catch (error) {
+    console.error('Error:', error.message);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
 app.use("/cloze",ClozeRouter);
 app.use("/categorise",CategoriseRouter);
 app.use("/comprehension",ComprehensionRouter);

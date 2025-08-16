@@ -59,6 +59,19 @@ const RenderQ1 = () => {
     return Object.values(droppedItems).some(items => items && items.includes(itemName));
   };
 
+  const handleSubmit = async () => {
+    try {
+      await fetch('http://localhost:5000/responseQ1', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ droppedItems }),
+      });
+      alert('Submitted!');
+    } catch (error) {
+      alert('Error!');
+    }
+  };
+
   return (
           <div className='bg-gradient-to-br from-amber-100 to-orange-100'>
     <div className="p-12 min-h-[45vh]">
@@ -110,6 +123,11 @@ const RenderQ1 = () => {
         })}
       </div>
     </div>
+     <div className="text-center mt-8">
+         <button className="px-8 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded transition-colors"  onClick={handleSubmit}>
+           Submit Answer
+         </button>
+       </div>
     </div>
   )
 }

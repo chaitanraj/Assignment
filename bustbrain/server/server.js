@@ -1,6 +1,5 @@
 const express=require("express")
 const app=express();
-const PORT=5000;
 const router=express.Router();
 const mongoose=require("mongoose")
 const cors=require("cors")
@@ -26,9 +25,11 @@ mongoose
   .then(() => console.log("✅ Connected to MongoDB"))
   .catch((err) => console.error("❌ MongoDB connection error:", err));
 
-app.listen(5000,()=>{
-    console.log(`Server running on ${PORT}`)
-})
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, () => {
+  console.log(`✅ Server running on port ${PORT}`);
+});
 
 app.get("/",()=>{
     console.log("Backend Route Reached.")

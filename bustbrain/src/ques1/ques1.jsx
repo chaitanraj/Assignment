@@ -104,7 +104,7 @@ const ques1 = () => {
         })
       });
 
-      response.ok ? alert('Saved!') : alert('Error!');
+      response.ok ? console.log('Saved!') : console.log('Error!');
     } catch (error) {
       alert('Failed!');
     }

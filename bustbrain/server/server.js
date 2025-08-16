@@ -4,9 +4,15 @@ const PORT=5000;
 const router=express.Router();
 const mongoose=require("mongoose")
 const cors=require("cors")
+const multer = require('multer');
 
 app.use(cors());
 app.use(express.json());
+const upload = multer({ dest: 'uploads/' });
+
+app.post('/upload', upload.single('file'), (req, res) => {
+ res.json({ message: 'Uploaded', file: req.file.filename });
+});
 
 
 mongoose

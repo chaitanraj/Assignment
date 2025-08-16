@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 
 const ques3 = () => {
   const [passage, setPassage] = useState('');
+    const [uploadedImage, setUploadedImage] = useState(null);
+  
   const [mcq, setMcq] = useState([{
     questionText: '',
     options: ['', '', '', ''],
@@ -51,25 +53,64 @@ const ques3 = () => {
           correctAnswer: q.correctAnswer
         }))
       };
-      
+
       console.log('Sending data:', data);
-      
+
       const res = await fetch('http://localhost:5000/comprehension', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
       });
-      
+
       alert(res.ok ? "Saved!" : "Failed!");
     } catch (error) {
       console.error('Error:', error);
       alert("Error!");
     }
   };
+  const handleUpload = async (e) => {
+    const file = e.target.files[0];
 
+    if (file) {
+      const previewUrl = URL.createObjectURL(file);
+      setUploadedImage(previewUrl);
+
+      const formData = new FormData();
+      formData.append('file', file);
+      const response = await fetch('http://localhost:5000/upload', {
+        method: 'POST',
+        body: formData
+      });
+
+      const result = await response.json();
+      console.log(result);
+    };
+  }
   return (
     <div className="p-6 max-w-4xl mx-auto mb-12">
-      <h1 className="text-2xl font-bold mb-6 text-gray-800">Question 3</h1>
+
+      <div className="flex gap-6 mb-6 items-start">
+        <h1 className="text-2xl font-bold text-gray-800 flex items-center">Question 3</h1>
+        <div className="flex gap-4 items-start">
+          <div className="w-40 h-14 border-2 border-dashed border-gray-300 rounded flex items-center justify-center">
+            <label className="cursor-pointer">
+              <input type="file" accept="image/*" className="hidden" onChange={handleUpload} />
+              <span className="text-sm text-gray-600">Upload Image</span>
+            </label>
+
+          </div>
+        </div>
+        {uploadedImage && (
+          <div className="w-40 h-32 border border-gray-300 rounded overflow-hidden">
+            <img
+              src={uploadedImage}
+              alt="Preview"
+              className="w-full h-full object-cover"
+            />
+          </div>
+
+        )}
+      </div>
 
       <div className="mb-6">
         <label className="block text-lg font-medium text-gray-700 mb-3">Question Text</label>

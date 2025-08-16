@@ -124,4 +124,4 @@ const RenderQ2 = () => {
   )
 }
 
-export default RenderQ2
+export default RenderQ2;

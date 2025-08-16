@@ -23,12 +23,15 @@ const RenderQ3 = () => {
       alert('Submitted!');
     } catch (error) {
       alert('Error!');
-    }finally{
+    } finally {
       navigate("/thankYou");
     }
   };
 
-  if (!data) return <div className="text-center p-8">Loading...</div>;
+  // Enhanced loading check - ensure data exists AND has questions array
+  if (!data || !data.questions || !Array.isArray(data.questions)) {
+    return <div className="text-center p-8">Loading...</div>;
+  }
 
   return (
     <div className='bg-gradient-to-br from-amber-100 to-orange-100'>
@@ -54,7 +57,8 @@ const RenderQ3 = () => {
               </p>
 
               <div className="space-y-2">
-                {question.options.map((option, optIndex) => (
+                {/* Add safety check for options array too */}
+                {question.options && Array.isArray(question.options) && question.options.map((option, optIndex) => (
                   <label
                     key={optIndex}
                     className={`flex items-center p-3 border rounded cursor-pointer transition-colors hover:bg-gray-50 ${selectedAnswers[index] === option
@@ -80,9 +84,9 @@ const RenderQ3 = () => {
 
           {/* Submit Button */}
           <div className="text-center mt-8">
-            <button className="px-8 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded transition-colors" onClick={() => {
-              handleSubmit();
-            }}
+            <button 
+              className="px-8 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded transition-colors" 
+              onClick={handleSubmit}
             >
               Submit Test
             </button>

@@ -14,7 +14,7 @@ router.post('/', async (req, res) => {
 });
 
 router.get('/',async(req,res)=>{
-    const doc=await categorise.findOne();
+    const doc=await categorise.findOne().sort({ _id: -1 });
     const categoryNames = doc.categories.map(cat => cat.name);
      const itemNames = doc.categories.flatMap(cat => 
         cat.items.map(item => item.name)

@@ -60,8 +60,9 @@ const RenderQ1 = () => {
   };
 
   return (
-    <div className="p-12 bg-gray-50 min-h-screen">
-      <h2 className="text-2xl font-semibold mb-12 text-center">Categorise Render</h2>
+          <div className='bg-gradient-to-br from-amber-100 to-orange-100'>
+    <div className="p-12 min-h-[45vh]">
+      <h2 className="text-2xl font-bold mb-12 text-center">Question 1</h2>
       
       {/* Draggable Items */}
       <div className="flex justify-center gap-6 mb-16 flex-wrap">
@@ -108,6 +109,7 @@ const RenderQ1 = () => {
           );
         })}
       </div>
+    </div>
     </div>
   )
 }

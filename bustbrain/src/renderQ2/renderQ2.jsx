@@ -58,19 +58,9 @@ const RenderQ2 = () => {
             key={`dropzone-${i}`}
             onDrop={(e) => handleDrop(e, i)}
             onDragOver={handleDragOver}
-            style={{
-              display: 'inline-block',
-              minWidth: '80px',
-              height: '30px',
-              margin: '0 5px',
-              padding: '5px 10px',
-              border: '2px dashed #ccc',
-              borderRadius: '4px',
-              backgroundColor: droppedWords[i] ? '#e8f5e8' : '#f9f9f9',
-              textAlign: 'center',
-              lineHeight: '20px',
-              cursor: 'pointer'
-            }}
+            className={`inline-block min-w-[80px] h-[30px] mx-[5px] px-[10px] py-[5px] border-2 border-dashed border-gray-300 rounded text-center leading-5 ${
+              droppedWords[i] ? 'bg-green-50' : 'bg-gray-50'
+            }`}
           >
             {droppedWords[i] || ''}
           </span>
@@ -82,45 +72,31 @@ const RenderQ2 = () => {
   };
 
   return (
-    <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
-      <h2 style={{ marginBottom: '20px', color: '#333' }}>Question 2</h2>
+      <div className='bg-gradient-to-br from-amber-100 to-orange-100'>
+    <div className="p-5 font-sans">
+      <h2 className="text-2xl font-semibold mb-12 text-center">Question 2</h2>
       
       {/* Draggable word bubbles */}
-      <div style={{ marginBottom: '20px' }}>
+      <div className="mb-5 flex justify-center flex-wrap">
         {words
           .filter(word => !Object.values(droppedWords).includes(word))
           .map((word, index) => (
-          <span
-            key={index}
-            draggable
-            onDragStart={(e) => handleDragStart(e, word)}
-            style={{
-              display: 'inline-block',
-              backgroundColor: '#9f7aea',
-              color: 'white',
-              padding: '8px 16px',
-              margin: '5px',
-              borderRadius: '20px',
-              fontSize: '14px',
-              fontWeight: '500',
-              cursor: 'grab',
-              userSelect: 'none'
-            }}
-          >
-            {word}
-          </span>
-        ))}
+            <span
+              key={index}
+              draggable
+              onDragStart={(e) => handleDragStart(e, word)}
+              className="inline-block bg-purple-500 text-white px-4 py-2 m-[5px] rounded-full text-sm font-medium cursor-grab select-none"
+            >
+              {word}
+            </span>
+          ))}
       </div>
       
       {/* Sentence with drop zones */}
-      <div style={{ 
-        fontSize: '16px', 
-        lineHeight: '1.5',
-        color: '#333',
-        marginTop: '20px'
-      }}>
+      <div className="text-base leading-6 text-gray-700 mt-5 text-center flex justify-center">
         {renderSentenceWithDropZones()}
       </div>
+    </div>
     </div>
   )
 }

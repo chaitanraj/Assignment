@@ -27,7 +27,7 @@ router.post("/", async (req, res) => {
 
 router.get("/",async(req,res)=>{
     console.log("Cloze get route hit");
-    const doc=await cloze.findOne();
+    const doc=await cloze.findOne().sort({ _id: -1 });
     const sentenceDoc=doc?.sentence;
     const words=doc?.words
 

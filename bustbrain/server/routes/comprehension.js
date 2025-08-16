@@ -1,12 +1,12 @@
 const express = require("express")
 const router = express.Router();
-const Comprehension = require("../models/comprehension") // Use capital C
+const Comprehension = require("../models/comprehension")
 
 router.post('/', async (req, res) => {
-      console.log('Route hit!'); // Check if route is being called
-  console.log('Request body:', req.body); // Check if data is received
+      console.log('Route hit!'); 
+  console.log('Request body:', req.body); 
   try {
-    const newComprehension = new Comprehension(req.body); // Different variable name
+    const newComprehension = new Comprehension(req.body); 
     await newComprehension.save();
     res.json({ success: true, id: newComprehension._id });
   } catch (error) {
@@ -16,7 +16,7 @@ router.post('/', async (req, res) => {
 
 router.get('/', async (req, res) => {
   try {
-    const data = await Comprehension.findOne();
+    const data = await Comprehension.findOne().sort({ _id: -1 });
     
     res.json({
       passage: data.passage,

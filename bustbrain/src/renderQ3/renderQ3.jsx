@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const RenderQ3 = () => {
  const [data, setData] = useState(null);
  const [selectedAnswers, setSelectedAnswers] = useState({});
+ const navigate=useNavigate();
 
  useEffect(() => {
    fetch('http://localhost:5000/comprehension')
@@ -14,7 +16,9 @@ const RenderQ3 = () => {
  if (!data) return <div className="text-center p-8">Loading...</div>;
 
  return (
-   <div className="min-h-screen bg-gray-50 py-8">
+      <div className='bg-gradient-to-br from-amber-100 to-orange-100'>
+   <div className="min-h-screen py-8">
+    <h2 className="text-2xl font-bold mb-12 text-center">Question 3</h2>
      <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-sm border p-8">
        
        {/* Passage Section */}
@@ -62,11 +66,12 @@ const RenderQ3 = () => {
 
        {/* Submit Button */}
        <div className="text-center mt-8">
-         <button className="px-8 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded transition-colors">
+         <button className="px-8 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded transition-colors" onClick={()=>(navigate("/ThankYou"))}>
            Submit Test
          </button>
        </div>
      </div>
+   </div>
    </div>
  );
 }

@@ -12,6 +12,7 @@ import app from "./App"
 import RenderQ1 from "./renderQ1/renderQ1";
 import RenderQ3 from "./renderQ3/renderQ3"
 import Render from "./render/render";
+import ThankYou from "./thankYou/thankYou";
 
 const router = createBrowserRouter([
   {
@@ -41,6 +42,10 @@ const router = createBrowserRouter([
   {
     path: "/renderQ3",
     element: <RenderQ3 />
+  },
+  {
+    path: "/thankYou",
+    element: <ThankYou />
   },
 ]);
 
